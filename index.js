@@ -35,7 +35,6 @@ async function run() {
       const query = {};
       const cursor = productsCollection.find(query);
       const product = await cursor.toArray();
-      console.log(product);
       res.send({
         status: true,
         data: product,
@@ -46,12 +45,13 @@ async function run() {
       const product = req.body;
       const result = await productsCollection.insertOne(product);
       res.send(result);
-    });
+    });  
 
     app.delete("/product/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await productsCollection.deleteOne({ _id: ObjectId(id) }); 
-      res.send(result);
+      console.log(id);
+      const result = await productsCollection.deleteOne({ _id: new ObjectId(id) });
+      res.send(result); 
     });
 
     // Connect the client to the server	(optional starting in v4.7)
@@ -59,7 +59,7 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
+  } finally { 
     // Ensures that the client will close when you finish/error
     // await client.close();
   }
@@ -68,9 +68,10 @@ async function run() {
 run().catch((err) => console.log(err));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+  res.send("Hello World! phone-hunter web-server is running ");
+}); 
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+ 
